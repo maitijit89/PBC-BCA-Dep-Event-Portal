@@ -1,26 +1,384 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #f4f6fb;
+    --foreground: #0f172a;
+    --card: rgba(255, 255, 255, 0.72);
+    --card-foreground: #0f172a;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --secondary: rgba(241, 245, 249, 0.7);
+    --secondary-foreground: #1e293b;
+    --muted: rgba(248, 250, 252, 0.6);
+    --muted-foreground: #64748b;
+    --accent: #3b82f6;
+    --accent-foreground: #ffffff;
+    --border: rgba(255, 255, 255, 0.65);
+    --ring: rgba(99, 102, 241, 0.35);
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f6f8fd;
+  color: #0f172a;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  position: relative;
 }
+
+/* Apple Liquid Ambient Mesh Background with High Vibrancy & Specular Refraction */
+.liquid-bg-canvas {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none !important;
+  z-index: 0;
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(50px);
+  opacity: 0.75;
+  will-change: transform;
+  pointer-events: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.liquid-orb-1 {
+  top: -8%;
+  left: 10%;
+  width: 580px;
+  height: 580px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.8) 0%, rgba(129, 140, 248, 0.45) 45%, transparent 75%);
+  animation: liquidFloat1 18s ease-in-out infinite alternate;
+}
+
+.liquid-orb-2 {
+  top: 22%;
+  right: -5%;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.75) 0%, rgba(217, 70, 239, 0.4) 45%, transparent 75%);
+  animation: liquidFloat2 22s ease-in-out infinite alternate;
+}
+
+.liquid-orb-3 {
+  top: 55%;
+  left: -6%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.7) 0%, rgba(59, 130, 246, 0.35) 45%, transparent 75%);
+  animation: liquidFloat3 20s ease-in-out infinite alternate;
+}
+
+.liquid-orb-4 {
+  bottom: -6%;
+  right: 15%;
+  width: 680px;
+  height: 680px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.65) 0%, rgba(236, 72, 153, 0.35) 45%, transparent 75%);
+  animation: liquidFloat1 25s ease-in-out infinite alternate-reverse;
+}
+
+.liquid-orb-5 {
+  top: 40%;
+  left: 35%;
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.6) 0%, rgba(52, 211, 153, 0.3) 45%, transparent 75%);
+  animation: liquidFloat2 24s ease-in-out infinite alternate-reverse;
+}
+
+/* Mobile & Low-End Optimization */
+@media (max-width: 640px) {
+  .liquid-orb {
+    filter: blur(40px);
+    opacity: 0.7;
+  }
+  .liquid-orb-3,
+  .liquid-orb-5 {
+    display: none;
+  }
+  .liquid-orb-1 {
+    width: 340px;
+    height: 340px;
+  }
+  .liquid-orb-2 {
+    width: 360px;
+    height: 360px;
+  }
+  .liquid-orb-4 {
+    width: 380px;
+    height: 380px;
+  }
+}
+
+/* Accessibility & Battery Saver */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-orb,
+  .animate-pulse,
+  .apple-glass-btn::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes liquidFloat1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(45px, 55px) scale(1.08);
+  }
+  100% {
+    transform: translate(-35px, 30px) scale(0.94);
+  }
+}
+
+@keyframes liquidFloat2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-50px, -40px) scale(1.06);
+  }
+  100% {
+    transform: translate(35px, -20px) scale(0.92);
+  }
+}
+
+@keyframes liquidFloat3 {
+  0% {
+    transform: translate(0, 0) scale(0.95);
+  }
+  50% {
+    transform: translate(50px, -35px) scale(1.1);
+  }
+  100% {
+    transform: translate(-40px, 50px) scale(1);
+  }
+}
+
+/* Apple Liquid Glass Core Styling with Crystal Translucency & Specular Bevels */
+.liquid-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.35) 100%);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 20px 45px -12px rgba(15, 23, 42, 0.08),
+    0 4px 16px -4px rgba(99, 102, 241, 0.06),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    inset 0 -1px 1.5px 0 rgba(255, 255, 255, 0.4);
+}
+
+.liquid-glass-subtle {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.28) 100%);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 
+    0 10px 25px -8px rgba(15, 23, 42, 0.05),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.liquid-glass-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0.38) 100%);
+  backdrop-filter: blur(26px) saturate(200%);
+  -webkit-backdrop-filter: blur(26px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 
+    0 25px 50px -15px rgba(30, 41, 59, 0.09),
+    0 10px 25px -8px rgba(99, 102, 241, 0.08),
+    inset 0 2px 2.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.liquid-glass-card:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.52) 100%);
+  border-color: rgba(255, 255, 255, 1);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 35px 65px -15px rgba(99, 102, 241, 0.18),
+    0 15px 30px -10px rgba(30, 41, 59, 0.08),
+    inset 0 2.5px 3px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px 0 rgba(255, 255, 255, 0.6);
+}
+
+.liquid-glass-pill {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 4px 15px -3px rgba(0, 0, 0, 0.04),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
+}
+
+.liquid-glass-input {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 2px 10px -2px rgba(15, 23, 42, 0.04),
+    inset 0 1px 2px 0 rgba(0, 0, 0, 0.03),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95);
+  transition: all 0.25s ease;
+  /* Prevent iOS zoom while maintaining accessibility */
+  font-size: 16px;
+}
+
+@media (min-width: 640px) {
+  .liquid-glass-input {
+    font-size: 0.875rem; /* 14px */
+  }
+}
+
+.liquid-glass-input:focus {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: #6366f1;
+  box-shadow: 
+    0 0 0 4px rgba(99, 102, 241, 0.18),
+    0 8px 20px -6px rgba(99, 102, 241, 0.2),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1);
+}
+
+/* Apple Liquid Gloss Primary Button */
+.apple-glass-btn {
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 44px; /* Apple HIG standard tap target */
+  box-shadow: 
+    0 12px 28px -6px rgba(79, 70, 229, 0.4),
+    0 4px 12px -2px rgba(79, 70, 229, 0.25),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+}
+
+.apple-glass-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: 0.75s ease;
+  pointer-events: none;
+}
+
+.apple-glass-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 18px 36px -8px rgba(79, 70, 229, 0.5),
+    0 6px 16px -2px rgba(79, 70, 229, 0.3),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.6);
+}
+
+.apple-glass-btn:hover::before {
+  left: 100%;
+}
+
+.apple-glass-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Apple Secondary Frosted Glass Button */
+.apple-glass-btn-secondary {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  min-height: 44px; /* Apple HIG standard tap target */
+  box-shadow: 
+    0 8px 20px -6px rgba(15, 23, 42, 0.06),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+}
+
+@supports (backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px)) {
+  .apple-glass-btn-secondary {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+}
+
+.apple-glass-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 25px -8px rgba(99, 102, 241, 0.12),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 1);
+}
+
+.apple-glass-btn-secondary:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Hide scrollbars for swipeable chips / tabs */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Safe Area Inset Support */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Custom Apple Glass Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .liquid-bg-canvas,
+  .no-print {
+    display: none !important;
+  }
+}
+
