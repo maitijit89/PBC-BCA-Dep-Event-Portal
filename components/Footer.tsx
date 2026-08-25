@@ -25,7 +25,8 @@ export function Footer() {
                 Department of Computer Application (BCA)
               </div>
               <div className="text-slate-500 font-medium mt-0.5">
-                Panskura Banamali College (Autonomous) &bull; Purba Medinipur, West Bengal
+                Panskura Banamali College (Autonomous) &bull; Purba Medinipur,
+                West Bengal
               </div>
             </div>
           </div>
@@ -36,8 +37,9 @@ export function Footer() {
             &copy; {new Date().getFullYear()} JitCoder. All rights reserved.
           </p>
           <p className="flex items-center gap-1.5">
-            Developed with{" "}
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> by BCA Student
+            Developed by{" "}
+            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> BCA
+            Student
           </p>
         </div>
       </div>
