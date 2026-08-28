@@ -56,12 +56,37 @@ export function checkRateLimit(
 }
 
 /**
- * Extracts client IP safely from Next.js request headers
+ * Extracts client IP safely from Next.js request headers.
+ * Prioritizes trusted reverse-proxy edge headers and sanitizes the output.
  */
 export function getClientIp(req: Request): string {
+  // 1. Check direct proxy headers provided by trusted cloud edge providers
+  const cfConnectingIp = req.headers.get('cf-connecting-ip');
+  if (cfConnectingIp && isValidIp(cfConnectingIp.trim())) {
+    return cfConnectingIp.trim();
+  }
+
+  const xRealIp = req.headers.get('x-real-ip');
+  if (xRealIp && isValidIp(xRealIp.trim())) {
+    return xRealIp.trim();
+  }
+
+  // 2. Multi-hop X-Forwarded-For fallback
   const forwarded = req.headers.get('x-forwarded-for');
   if (forwarded) {
-    return forwarded.split(',')[0].trim();
+    const rawIp = forwarded.split(',')[0].trim();
+    if (isValidIp(rawIp)) {
+      return rawIp;
+    }
   }
-  return req.headers.get('x-real-ip') || 'anonymous-ip';
+
+  return 'anonymous-client';
+}
+
+function isValidIp(ip: string): boolean {
+  if (!ip || ip.length > 45) return false;
+  // Basic IPv4 or IPv6 check
+  const ipv4Regex = /^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$/;
+  const ipv6Regex = /^[0-9a-fA-F:]{2,39}$/;
+  return ipv4Regex.test(ip) || ipv6Regex.test(ip);
 }

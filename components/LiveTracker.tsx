@@ -232,6 +232,39 @@ export function LiveTracker() {
                 style={{ width: `${Math.max(4, progressPercent)}%` }}
               />
             </div>
+
+            {/* Target Milestone Markers */}
+            <div className="flex justify-between items-center text-[10px] text-slate-400 font-bold mt-2 px-1">
+              <span>₹0 (Start)</span>
+              <span className={progressPercent >= 25 ? 'text-indigo-600 font-extrabold' : ''}>25%</span>
+              <span className={progressPercent >= 50 ? 'text-purple-600 font-extrabold' : ''}>50% (Break-even)</span>
+              <span className={progressPercent >= 75 ? 'text-pink-600 font-extrabold' : ''}>75%</span>
+              <span className={progressPercent >= 100 ? 'text-emerald-600 font-extrabold' : ''}>100% (Target)</span>
+            </div>
+
+            {/* Budget Transparency Breakdown */}
+            <div className="mt-6 pt-5 border-t border-slate-200/60 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+              <div className="p-3 rounded-2xl liquid-glass-subtle border border-white/80">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Grand Feast</div>
+                <div className="text-sm font-black text-indigo-700 mt-0.5">45%</div>
+                <div className="text-[9px] text-slate-400">Buffet &amp; High-Tea</div>
+              </div>
+              <div className="p-3 rounded-2xl liquid-glass-subtle border border-white/80">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Prizes &amp; Awards</div>
+                <div className="text-sm font-black text-purple-700 mt-0.5">25%</div>
+                <div className="text-[9px] text-slate-400">Cash &amp; Trophies</div>
+              </div>
+              <div className="p-3 rounded-2xl liquid-glass-subtle border border-white/80">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Kits &amp; Badges</div>
+                <div className="text-sm font-black text-pink-700 mt-0.5">20%</div>
+                <div className="text-[9px] text-slate-400">Passes &amp; Certificates</div>
+              </div>
+              <div className="p-3 rounded-2xl liquid-glass-subtle border border-white/80">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Stage &amp; AV</div>
+                <div className="text-sm font-black text-emerald-700 mt-0.5">10%</div>
+                <div className="text-[9px] text-slate-400">Sound &amp; Lighting</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

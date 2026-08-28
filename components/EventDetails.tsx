@@ -34,13 +34,21 @@ const HIGHLIGHTS = [
   },
 ];
 
-const SCHEDULE = [
-  { time: '09:30 AM', event: 'Gate Entry & Pass Verification with 6-Digit ID', note: 'Main Gate' },
-  { time: '10:15 AM', event: 'Inaugural Ceremony & Welcome Speech by Faculty', note: 'Auditorium' },
-  { time: '11:00 AM', event: 'Keynote Tech Session & Coding Arena Kickoff', note: 'Computer Lab 1 & 2' },
-  { time: '01:30 PM', event: 'Grand Department Buffet Lunch & Networking', note: 'College Dining Hall' },
-  { time: '02:45 PM', event: 'Technical Quiz Finale & Cultural Showcase', note: 'Auditorium' },
-  { time: '04:30 PM', event: 'Prize Distribution, Group Photography & Wrap-Up', note: 'Main Stage' },
+interface ScheduleItem {
+  time: string;
+  event: string;
+  note: string;
+  category: 'ceremony' | 'coding' | 'feast' | 'quiz' | 'awards';
+  categoryLabel: string;
+}
+
+const SCHEDULE: ScheduleItem[] = [
+  { time: '09:30 AM', event: 'Gate Entry & Pass Verification with 6-Digit ID', note: 'Main Gate', category: 'ceremony', categoryLabel: 'Entry & Security' },
+  { time: '10:15 AM', event: 'Inaugural Ceremony & Welcome Speech by Faculty', note: 'Auditorium', category: 'ceremony', categoryLabel: 'Inauguration' },
+  { time: '11:00 AM', event: 'Keynote Tech Session & Coding Arena Kickoff', note: 'Computer Lab 1 & 2', category: 'coding', categoryLabel: 'Hackathon' },
+  { time: '01:30 PM', event: 'Grand Department Buffet Lunch & Networking', note: 'College Dining Hall', category: 'feast', categoryLabel: 'Buffet Feast' },
+  { time: '02:45 PM', event: 'Technical Quiz Finale & Cultural Showcase', note: 'Auditorium', category: 'quiz', categoryLabel: 'Tech Quiz' },
+  { time: '04:30 PM', event: 'Prize Distribution, Group Photography & Wrap-Up', note: 'Main Stage', category: 'awards', categoryLabel: 'Grand Finale' },
 ];
 
 const FAQS = [
@@ -65,10 +73,15 @@ const FAQS = [
 export function EventDetails() {
   const [activeTab, setActiveTab] = useState<'highlights' | 'schedule' | 'guidelines' | 'faq'>('highlights');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [scheduleFilter, setScheduleFilter] = useState<'all' | 'ceremony' | 'coding' | 'feast' | 'quiz' | 'awards'>('all');
 
   const toggleFaq = (index: number) => {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
+
+  const filteredSchedule = scheduleFilter === 'all'
+    ? SCHEDULE
+    : SCHEDULE.filter((s) => s.category === scheduleFilter);
 
   return (
     <section id="details" className="py-16 md:py-24 relative z-10">
@@ -169,28 +182,72 @@ export function EventDetails() {
 
         {/* Tab 2: Schedule */}
         {activeTab === 'schedule' && (
-          <div className="max-w-3xl mx-auto rounded-3xl liquid-glass p-6 sm:p-9 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <div className="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-200/60">
-              <Clock className="w-5 h-5 text-indigo-600" />
-              <h3 className="text-xl font-bold text-slate-900">Event Schedule Breakdown</h3>
+          <div className="max-w-3xl mx-auto rounded-3xl liquid-glass p-5 sm:p-9 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200/60">
+              <div className="flex items-center gap-2.5">
+                <Clock className="w-5 h-5 text-indigo-600" />
+                <h3 className="text-xl font-bold text-slate-900">Event Schedule Breakdown</h3>
+              </div>
+              <span className="text-xs text-slate-500 font-semibold">
+                Showing {filteredSchedule.length} session{filteredSchedule.length === 1 ? '' : 's'}
+              </span>
             </div>
-            <div className="space-y-3.5">
-              {SCHEDULE.map((slot, index) => (
+
+            {/* Interactive Track Filter Pills */}
+            <div className="flex flex-wrap items-center gap-1.5 mb-6 pb-2">
+              {[
+                { key: 'all', label: 'All Tracks' },
+                { key: 'ceremony', label: 'Entry & Ceremony' },
+                { key: 'coding', label: 'Hackathon' },
+                { key: 'feast', label: 'Buffet Feast' },
+                { key: 'quiz', label: 'Tech Quiz' },
+                { key: 'awards', label: 'Grand Finale' },
+              ].map((filter) => {
+                const isActive = scheduleFilter === filter.key;
+                return (
+                  <button
+                    key={filter.key}
+                    type="button"
+                    onClick={() => setScheduleFilter(filter.key as typeof scheduleFilter)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'bg-white/80 hover:bg-white text-slate-600 border border-slate-200/80 hover:text-slate-900'
+                    }`}
+                  >
+                    {filter.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="space-y-3">
+              {filteredSchedule.map((slot, index) => (
                 <div
                   key={index}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 p-4 rounded-2xl liquid-glass-subtle hover:bg-white/90 border-white/70 transition-all duration-200"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 p-4 rounded-2xl liquid-glass-subtle hover:bg-white/90 border border-white/70 transition-all duration-200 shadow-xs"
                 >
-                  <div className="flex items-center gap-3.5">
-                    <span className="text-xs font-mono font-bold text-indigo-700 shrink-0 bg-indigo-500/15 px-3.5 py-1.5 rounded-xl border border-indigo-500/20 backdrop-blur-md">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-bold text-indigo-700 shrink-0 bg-indigo-500/15 px-3 py-1.5 rounded-xl border border-indigo-500/20 backdrop-blur-md">
                       {slot.time}
                     </span>
-                    <span className="text-sm font-semibold text-slate-900">
-                      {slot.event}
+                    <div>
+                      <span className="text-sm font-semibold text-slate-900 block">
+                        {slot.event}
+                      </span>
+                      <span className="inline-flex sm:hidden items-center text-[10px] font-extrabold uppercase tracking-wider text-indigo-600 mt-0.5">
+                        {slot.categoryLabel}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 sm:text-right pl-14 sm:pl-0 shrink-0">
+                    <span className="hidden sm:inline-block px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+                      {slot.categoryLabel}
+                    </span>
+                    <span className="text-xs text-slate-500 font-medium">
+                      📍 {slot.note}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-500 font-medium sm:text-right pl-14 sm:pl-0">
-                    📍 {slot.note}
-                  </span>
                 </div>
               ))}
             </div>

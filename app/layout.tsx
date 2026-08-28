@@ -24,6 +24,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
+  themeColor: '#4f46e5',
 };
 
 export default function RootLayout({
@@ -33,7 +34,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className="antialiased selection:bg-indigo-600 selection:text-white bg-[#f6f8fd] text-slate-900 relative">
+      <body
+        suppressHydrationWarning
+        className="antialiased selection:bg-indigo-600 selection:text-white bg-[#f6f8fd] text-slate-900 relative pb-16 md:pb-0"
+      >
         {/* Apple Liquid Ambient Mesh Background */}
         <div className="liquid-bg-canvas" aria-hidden="true">
           <div className="liquid-orb liquid-orb-1" />

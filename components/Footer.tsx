@@ -39,7 +39,7 @@ export function Footer() {
           <p className="flex items-center gap-1.5">
             Developed by{" "}
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> BCA
-            Student
+            <a href="https://jit-portfolio-opal.vercel.app/">Student</a>
           </p>
         </div>
       </div>

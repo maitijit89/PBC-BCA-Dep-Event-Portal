@@ -13,11 +13,13 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
+import { EventCountdown } from "./EventCountdown";
+
 export function HeroSection() {
   return (
     <section
       id="overview"
-      className="relative pt-28 pb-12 sm:pt-36 sm:pb-20 overflow-hidden"
+      className="relative pt-24 pb-10 sm:pt-32 sm:pb-16 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         {/* Top Tagline with College Logo (Liquid Glass Pill) */}
@@ -55,7 +57,7 @@ export function HeroSection() {
         </p>
 
         {/* Quick Meta Badges (Liquid Glass Chips) */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
           <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full liquid-glass-subtle text-slate-700 text-[11px] sm:text-xs font-semibold hover:bg-white/80 transition-all">
             <Calendar className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
             <span>Annual Gathering 2026</span>
@@ -69,6 +71,9 @@ export function HeroSection() {
             <span>Instant Digital Pass</span>
           </div>
         </div>
+
+        {/* Live Event Countdown & Calendar Sync */}
+        <EventCountdown />
 
         {/* Dynamic Pricing Liquid Glass Interactive Preview Box */}
         <div className="max-w-lg mx-auto mb-8 p-3 rounded-3xl liquid-glass shadow-2xl">

@@ -31,10 +31,20 @@ export function calculateEventFee(semester: Semester | string): {
 }
 
 /**
- * Generates a random 6-digit numeric ID (100000 to 999999)
+ * Generates a cryptographically secure 6-digit numeric ID (100000 to 999999)
+ * Uses Node.js crypto.randomInt on server or Web Crypto API in browser.
  */
 export function generateUnique6DigitId(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString();
+  if (typeof window === 'undefined') {
+    // Node.js CSPRNG
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const nodeCrypto = require('crypto');
+    return nodeCrypto.randomInt(100000, 1000000).toString();
+  }
+  // Browser Web Crypto CSPRNG
+  const array = new Uint32Array(1);
+  window.crypto.getRandomValues(array);
+  return (100000 + (array[0] % 900000)).toString();
 }
 
 /**
